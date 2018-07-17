@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+   
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+       
+         <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+            </div>
+
+          
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                     @if (User.Identity.IsAuthenticated)
+                     {
+                         if (User.IsInRole("Admin"))
+                         {
+                            <li>@Html.ActionLink("AdminControl", "Index", "Admin") </li>
+                            
+                           
+                         }
+                         if (User.IsInRole("User"))
+                         {
+                            <li>@Html.ActionLink("Employees", "Index", "Employee") </li>
+                            <li>@Html.ActionLink("Departments", "Index", "Dept")</li>
+                          
+                         
+                             <li class="dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<b class="caret"></b></a>
+                             <ul class="dropdown-menu">
+                                 <li>@Html.ActionLink("Export All", "Index", new { Controller = "Reports" }) </li>
+                                 <li>@Html.ActionLink("Search And Export", "Index", new { Controller = "SrhReport" }) </li>
+                                
+                                 
+                             </ul>
+                         </li>
+                         
+                       
+                         
+                         }
+                         if (User.IsInRole("Guest"))
+                         {
+                             
+                         <li class="dropdown">
+                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports<b class="caret"></b></a>
+                             <ul class="dropdown-menu">
+                                 <li>@Html.ActionLink("Export All", "Index", new { Controller = "Reports" }) </li>
+                                 <li>@Html.ActionLink("Search And Export", "Index", new { Controller = "SrhReport" }) </li>
+                                
+                             </ul>
+                         </li>
+                             
+                        
+                            
+                         }
+                         
+                    <li>@Html.ActionLink("Download CV", "Download", new { Controller = "FileProcess" })</li>    
+                    <li>@Html.ActionLink("SignOut", "SignOut", new { Controller = "Login" })</li>
+                    <li><a href="#">Welcome @User.Identity.Name.ToString()</a> </li>
+                     }
+                    else
+                    {
+                         
+                         <li>@Html.ActionLink("Register", "Create", new { Controller = "Reg" })</li>
+                         <li>@Html.ActionLink("Log In", "Index", new { Controller = "Login" })</li>
+                         <li>@Html.ActionLink("Profile", "Index", new { Controller = "CVPage" })</li>
+                         <li>@Html.ActionLink("Download CV", "Download", new { Controller = "FileProcess" })</li>
+                    }
+                    
+                    
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container body-content">
+        <br /><br />
+        @RenderBody()
+        <hr />
+
+       
+        <footer>
+            <p>&copy; @DateTime.Now.Year - jQuery ajax - CRUD Operations-Repository Pattren With MVC And EF</p>
+        </footer>
+       
+    </div>
+
+    <div class="loaderbody" id="loaderbody">
+        <div class="loader"></div>
+    </div>
+    
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/Scripts.js"></script>
+    <script src="~/Scripts/notify.min.js"></script>
+    
+    
+    </body>
+</html>

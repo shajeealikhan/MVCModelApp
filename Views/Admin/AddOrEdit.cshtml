@@ -1,0 +1,96 @@
+﻿@model MVCModelApp.Models.TblLogin
+
+@{
+    ViewBag.Title = "AddOrEdit";
+    Layout = null;
+    List<MVCModelApp.Models.Roles> Roles = new List<MVCModelApp.Models.Roles>();
+
+    Roles.Add(new MVCModelApp.Models.Roles() { id = "Guest", Role = "Guest" });
+    Roles.Add(new MVCModelApp.Models.Roles() { id = "User", Role = "User" });
+    Roles.Add(new MVCModelApp.Models.Roles() { id = "Admin", Role = "Admin" });
+}
+
+
+@if (TempData["Msg"] != null)
+{ 
+    <div class="alert alert-dismissable alert-info">
+     <button type="button" class="close" data-dismiss="alert">×</button>
+        @TempData["Msg"].ToString()
+        
+    </div>
+}
+
+
+
+@using (Html.BeginForm("AddOrEdit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", onSubmit = "return jQueryAjaxPost(this);", data_restUrl = Url.Action("AddOrEdit", "Admin", new { id=0}) }))//data-resetUrl
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.LoginId)
+           
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LoginName, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LoginName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LoginName)
+                    </div>
+                </div>
+
+                @if (Model.LoginId == 0) {
+                    
+                     <div class="form-group">
+                    @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.Password, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                    
+                } 
+                else
+                {
+                     <div class="form-group">
+                   
+                    <div class="col-md-4">
+                        @Html.HiddenFor(model => model.Password, new { @class = "form-control " })
+                        @Html.ValidationMessageFor(model => model.Password, null, new { @class = "text-danger" })
+                    </div>
+                </div>
+                }
+
+               
+       
+           <div class="form-group">
+            @Html.LabelFor(model => model.LoginType, new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                  @Html.DropDownList("LoginType", new SelectList(Roles,"id","Role"), new { @class = "form-control" })
+               
+                @Html.ValidationMessageFor(model => model.LoginType, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+                 <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Submit" class="btn btn-default" />
+                          @if (Model.LoginId != 0)
+                           {
+                            <a class="btn btn-success" onclick="refreshAddNewTab('@Url.Action("AddOrEdit","Admin",new{id=0})',false)"><i class="fa fa-plus"></i> Add New</a>
+                              @Html.ActionLink("Reset Password", "ResetPassword", new { id=Model.LoginId } , new { @class = "btn btn-success" }) 
+                           }
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+

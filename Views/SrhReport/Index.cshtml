@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Search And Export</h2>
+
+@if(TempData["Msg"]!=null)
+    { 
+    <div>
+          @TempData["Msg"].ToString()
+    </div>
+    }
+
+@using (Ajax.BeginForm("GetSearch", "SrhReport",
+    new AjaxOptions()
+    {
+        HttpMethod = "Get",
+        UpdateTargetId = "SrhEmp",
+        InsertionMode =InsertionMode.Replace}))
+
+  {   
+   //the following are search options   
+     <div style="background-color: whitesmoke; color:blue; padding:1px;  width: 70%;" word-spacing: 10px;>
+       
+      
+        @Html.TextBox("search")
+
+        <input type="submit" name="submit" value="Search" />
+      
+     </div>
+  }
+
+<div id="SrhEmp">
+     
+
+      @{Html.RenderPartial("_PartialSearchEmp");}
+     
+</div>
